@@ -1,3 +1,0 @@
-<?php
-
-// Fichier : PointsExpiration.php
