@@ -1,0 +1,3 @@
+<?php
+
+// Fichier : RewardsModel.php

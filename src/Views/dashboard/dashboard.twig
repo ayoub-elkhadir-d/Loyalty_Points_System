@@ -1,0 +1,61 @@
+{% extends 'layouts/base.twig' %}
+
+{% block title %}Tableau de bord - ShopEasy{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="welcome-banner">
+        <h1>Bienvenue, {{ user.name|capitalize }} !</h1>
+        <p class="text-muted">Membre depuis {{ user.created_at|date('d/m/Y') }}</p>
+    </div>
+    
+    <div class="points-summary card">
+        <div class="card-body">
+            <h2 class="card-title">Vos points de fidélité</h2>
+            <div class="points-display">
+                <span class="points-amount">{{ user.total_points|number_format }}</span>
+                <span class="points-label">points</span>
+            </div>
+            
+            <div class="points-progress">
+                <div class="progress">
+                    <div class="progress-bar" 
+                         style="width: {{ (user.total_points / 1000) * 100 }}%">
+                    </div>
+                </div>
+                <small>Prochaine récompense à 1000 points</small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="recent-transactions">
+        <h3>Dernières transactions</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Points</th>
+                    <th>Solde</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.created_at|date('d/m/Y H:i') }}</td>
+                    <td>{{ transaction.description }}</td>
+                    <td class="{{ transaction.type == 'earned' ? 'text-success' : 'text-danger' }}">
+                        {{ transaction.type == 'earned' ? '+' : '-' }}{{ transaction.amount }}
+                    </td>
+                    <td>{{ transaction.balance_after }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">Aucune transaction</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
