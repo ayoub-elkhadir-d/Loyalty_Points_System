@@ -42,62 +42,67 @@ class AuthController extends Controller {
     public function register() {
         if ($this->isLoggedIn()) {
             $this->redirect('/dashboard');
-        }
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'] ?? '';
-            $password = $_POST['password'] ?? '';
-            $name = $_POST['name'] ?? '';
-            $confirmPassword = $_POST['confirm_password'] ?? '';
-
-            // Validation
-            $errors = [];
+            }
             
-            if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errors[] = "Valid email is required";
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $email = $_POST['email'] ?? '';
+                $password = $_POST['password'] ?? '';
+                $name = $_POST['name'] ?? '';
+                $confirmPassword = $_POST['confirm_password'] ?? '';
+                
+                
+                $errors = [];
+                
+                if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $errors[] = "Valid email is required";
             }
             
             if (strlen($password) < 6) {
                 $errors[] = "Password must be at least 6 characters";
-            }
-            
-            if ($password !== $confirmPassword) {
-                $errors[] = "Passwords do not match";
-            }
-            
-            if (empty($name)) {
-                $errors[] = "Name is required";
-            }
-            
-            // Vérifier si l'email existe déjà
+                }
+                
+                if ($password !== $confirmPassword) {
+                    $errors[] = "Passwords do not match";
+                    }
+                    
+                    if (empty($name)) {
+                        $errors[] = "Name is required";
+                        }
+                        
+                        
             $existingUser = $this->userModel->findByEmail($email);
             if ($existingUser) {
                 $errors[] = "Email already registered";
-            }
-
-            if (empty($errors)) {
-                $success = $this->userModel->create($email, $password, $name);
-                
-                if ($success) {
-                    $user = $this->userModel->findByEmail($email);
-                    $_SESSION['user_id'] = $user['id'];
-                    $_SESSION['user_name'] = $user['name'];
-                    $_SESSION['user_email'] = $user['email'];
-                    
-                    $this->redirect('/dashboard');
-                } else {
-                    $errors[] = "Registration failed. Please try again.";
                 }
-            }
-            
-            $this->render('auth/register.twig', ['errors' => $errors]);
-        } else {
-            $this->render('auth/register.twig');
+                
+                if (empty($errors)) {
+                    $success = $this->userModel->create($email, $password, $name);
+                    
+                    if ($success) {
+                        $user = $this->userModel->findByEmail($email);
+                        $_SESSION['user_id'] = $user['id'];
+                        $_SESSION['user_name'] = $user['name'];
+                        $_SESSION['user_email'] = $user['email'];
+                        
+                        $this->redirect('/dashboard');
+                        } else {
+                            $errors[] = "Registration failed. Please try again.";
+                            }
+                            }
+                            
+                            $this->render('auth/register.twig', ['errors' => $errors]);
+                            } else {
+                                
+                            //f
         }
-    }
+        }
+        
+        public function logout() {
+            session_destroy();
+            $this->redirect('/login');
+            }
+            }
 
-    public function logout() {
-        session_destroy();
-        $this->redirect('/login');
-    }
-}
+            
+                // public function regester(){
+                // }
