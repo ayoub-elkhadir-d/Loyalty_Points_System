@@ -1,35 +1,26 @@
 <?php
+
 namespace App\Core;
 
 use PDO;
-use PDOException;
 
-class Database {
-    private static $instance = null;
-    private $connection;
+class Database
+{
+    private static ?PDO $pdo = null;
 
-    private function __construct() {
-        try {
-            $this->connection = new PDO(
-                "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
-                DB_USER,
-                DB_PASSWORD
+    public static function getInstance(): PDO
+    {
+        if (self::$pdo === null) {
+            self::$pdo = new PDO(
+                "mysql:host=localhost;dbname=shopeasy;charset=utf8",
+                "root",
+                "",
+                [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+                ]
             );
-            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            die("Connection failed: " . $e->getMessage());
         }
-    }
 
-    public static function getInstance() {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
-
-    public function getConnection() {
-        return $this->connection;
+        return self::$pdo;
     }
 }
