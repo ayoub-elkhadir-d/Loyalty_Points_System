@@ -93,8 +93,7 @@ class AuthController extends Controller {
                             $this->render('auth/register.twig', ['errors' => $errors]);
                             } else {
                                 
-                            //f
-        }
+                             }
         }
         
         public function logout() {

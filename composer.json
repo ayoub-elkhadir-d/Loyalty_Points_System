@@ -1,0 +1,15 @@
+{
+    "name": "safiy/shopeasy-loyalty",
+    "autoload": {
+        "psr-4": {
+            "Safiy\\ShopeasyLoyalty\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ayoub",
+            "email": "assiacodi@gmail.com"
+        }
+    ],
+    "require": {}
+}
