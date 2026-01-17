@@ -1,4 +1,7 @@
 {
+    "name": "shopeasy/loyalty-system",
+    "description": "ShopEasy Loyalty Points System",
+    "type": "project",
     "require": {
         "twig/twig": "^3.0"
     },

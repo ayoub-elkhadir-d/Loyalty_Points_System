@@ -1,0 +1,55 @@
+{# app/views/auth/register.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register - Loyalty System</title>
+    <style>
+        body { font-family: Arial; max-width: 400px; margin: 50px auto; padding: 20px; }
+        .error { color: red; background: #ffe6e6; padding: 10px; border-radius: 5px; margin-bottom: 15px; }
+        input { width: 100%; padding: 10px; margin: 8px 0; box-sizing: border-box; }
+        button { background: green; color: white; padding: 12px; border: none; width: 100%; }
+        .container { border: 1px solid #ddd; padding: 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Register</h2>
+        
+        {% if errors %}
+            <div class="error">
+                {% for error in errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <form method="POST" action="/register">
+            <div>
+                <label>Full Name:</label>
+                <input type="text" name="name" value="{{ old_data.name }}" required>
+            </div>
+            
+            <div>
+                <label>Email:</label>
+                <input type="email" name="email" value="{{ old_data.email }}" required>
+            </div>
+            
+            <div>
+                <label>Password (min 6 characters):</label>
+                <input type="password" name="password" required>
+            </div>
+            
+            <div>
+                <label>Confirm Password:</label>
+                <input type="password" name="confirm_password" required>
+            </div>
+            
+            <button type="submit">Create Account</button>
+        </form>
+        
+        <p style="margin-top: 15px;">
+            Already have an account? <a href="/login">Login here</a>
+        </p>
+    </div>
+</body>
+</html>

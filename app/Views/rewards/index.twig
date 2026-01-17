@@ -1,0 +1,103 @@
+{% extends 'layouts/base.twig' %}
+
+{% block title %}Rewards Catalog - ShopEasy Loyalty{% endblock %}
+
+{% block extra_css %}
+    <style>
+        .rewards-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .rewards-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 15px; margin-bottom: 30px; }
+        .points-display { font-size: 48px; font-weight: bold; margin: 10px 0; }
+        .rewards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; margin-top: 30px; }
+        .reward-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.3s ease; }
+        .reward-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+        .reward-header-card { padding: 25px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
+        .reward-body { padding: 25px; }
+        .reward-points { font-size: 28px; font-weight: bold; color: #667eea; margin: 15px 0; }
+        .btn-redeem { width: 100%; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; display: block; }
+        .btn-redeem:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+        .alert { padding: 15px; border-radius: 8px; margin-top: 20px; }
+        .alert-danger { background: #fee2e2; color: #b91c1c; }
+        .alert-success { background: #dcfce7; color: #15803d; }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="rewards-container">
+    {# Header Section #}
+    <div class="rewards-header">
+        <h1>Rewards Catalog</h1>
+        <p>Redeem your loyalty points for amazing rewards</p>
+        <div class="points-display">{{ user_points|number_format }} Points</div>
+    </div>
+
+    {# Navigation Menu #}
+    <div class="nav-menu" style="display: flex; gap: 15px; margin-bottom: 30px;">
+        <a href="/shopeasy-loyalty/public/dashboard" class="nav-button border p-2 rounded">
+            <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a href="/shopeasy-loyalty/public/logout" class="nav-button bg-danger text-white p-2 rounded">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+
+    {# Flash Messages #}
+    {% if session.error %}
+        <div class="alert alert-danger">
+            <i class="fas fa-exclamation-circle"></i> {{ session.error }}
+        </div>
+    {% endif %}
+
+    {% if session.success %}
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i> {{ session.success }}
+        </div>
+    {% endif %}
+
+    {# Rewards Grid #}
+    <div class="rewards-grid">
+        {% for reward in rewards %}
+            {% set canAfford = user_points >= reward.points_required %}
+            {% set isAvailable = (reward.stock == -1 or reward.stock > 0) %}
+            
+            <div class="reward-card" data-points="{{ reward.points_required }}">
+                <div class="reward-header-card">
+                    <h3 class="reward-title">{{ reward.name }}</h3>
+                </div>
+                
+                <div class="reward-body">
+                    <div class="reward-points">{{ reward.points_required|number_format }} Points</div>
+                    <p class="reward-description">{{ reward.description }}</p>
+                    
+                    <div class="reward-stock" style="font-size: 0.9em; color: #777; margin-bottom: 15px;">
+                        <i class="fas fa-box"></i> Stock: 
+                        {{ reward.stock == -1 ? 'Unlimited' : reward.stock ~ ' left' }}
+                    </div>
+
+                    <form method="POST" action="/shopeasy-loyalty/public/rewards/redeem/{{ reward.id }}" 
+                          onsubmit="return confirm('Redeem {{ reward.name }}?')">
+                        <button type="submit" class="btn-redeem" {% if not canAfford or not isAvailable %}disabled{% endif %}>
+                            {% if not canAfford %}
+                                Need {{ (reward.points_required - user_points)|number_format }} more points
+                            {% elseif not isAvailable %}
+                                Out of Stock
+                            {% else %}
+                                <i class="fas fa-gift"></i> Redeem Now
+                            {% endif %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <div class="no-rewards" style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                <h3>No rewards available at the moment.</h3>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  
+</script>
+{% endblock %}

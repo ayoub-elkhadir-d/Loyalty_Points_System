@@ -1,0 +1,603 @@
+{% extends 'layouts/base.twig' %}
+
+{% block title %}{{ reward.name }} - ShopEasy Loyalty{% endblock %}
+
+{% block content %}
+<div class="reward-detail-container">
+    <div class="breadcrumb">
+        <a href="/rewards">Rewards</a> &rsaquo; {{ reward.name }}
+    </div>
+    
+    {% if session.error %}
+        <div class="alert alert-error">
+            {{ session.error }}
+        </div>
+    {% endif %}
+    
+    <div class="reward-detail-card">
+        <div class="reward-main-info">
+            <div class="reward-image-placeholder">
+                <div class="image-icon">🏆</div>
+            </div>
+            
+            <div class="reward-info">
+                <h1>{{ reward.name }}</h1>
+                <div class="points-display-large">
+                    <span class="points-label">Price:</span>
+                    <span class="points-value">{{ reward.points_required|number_format }} points</span>
+                </div>
+                
+                <div class="stock-status">
+                    {% if reward.stock == -1 %}
+                        <span class="status available">✓ Available</span>
+                    {% elseif reward.stock > 0 %}
+                        <span class="status available">✓ {{ reward.stock }} available</span>
+                    {% else %}
+                        <span class="status unavailable">✗ Out of stock</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="reward-description-section">
+            <h2>Description</h2>
+            <p>{{ reward.description }}</p>
+        </div>
+        
+        <div class="points-comparison">
+            <h2>Points Comparison</h2>
+            <div class="comparison-grid">
+                <div class="comparison-item">
+                    <div class="comparison-label">Required Points</div>
+                    <div class="comparison-value required">{{ reward.points_required|number_format }}</div>
+                </div>
+                
+                <div class="comparison-item">
+                    <div class="comparison-label">Your Points</div>
+                    <div class="comparison-value {% if user_points >= reward.points_required %}enough{% else %}not-enough{% endif %}">
+                        {{ user_points|number_format }}
+                    </div>
+                </div>
+                
+                <div class="comparison-item">
+                    <div class="comparison-label">Difference</div>
+                    <div class="comparison-value {% if user_points >= reward.points_required %}enough{% else %}not-enough{% endif %}">
+                        {% if user_points >= reward.points_required %}
+                            +{{ (user_points - reward.points_required)|number_format }}
+                        {% else %}
+                            -{{ (reward.points_required - user_points)|number_format }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="points-bar">
+                <div class="bar-background">
+                    <div class="bar-fill" style="width: {% if user_points >= reward.points_required %}100{% else %}{{ (user_points / reward.points_required * 100)|round(0) }}{% endif %}%"></div>
+                </div>
+                <div class="bar-labels">
+                    <span>0</span>
+                    <span>{{ reward.points_required|number_format }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="redemption-section">
+            {% if reward.stock != 0 %}
+                {% if user_points >= reward.points_required %}
+                    <div class="can-redeem-box">
+                        <div class="success-message">
+                            <h3>🎉 Congratulations!</h3>
+                            <p>You have enough points to redeem this reward.</p>
+                        </div>
+                        
+                        <div class="redemption-summary">
+                            <div class="summary-item">
+                                <span class="summary-label">Current Points:</span>
+                                <span class="summary-value">{{ user_points|number_format }}</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Points to Deduct:</span>
+                                <span class="summary-value deduct">-{{ reward.points_required|number_format }}</span>
+                            </div>
+                            <div class="summary-item total">
+                                <span class="summary-label">Remaining Points:</span>
+                                <span class="summary-value">{{ (user_points - reward.points_required)|number_format }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="warning-notice">
+                            <p><strong>⚠️ Important:</strong> This action cannot be undone. Points will be deducted immediately.</p>
+                        </div>
+                        
+                        <div class="action-buttons-large">
+                            <a href="/shopeasy-loyalty/public/rewards/redeem/{{ reward.id }}" class="btn btn-redeem-large">
+                                Redeem Now
+                            </a>
+                            <a href="/shopeasy-loyalty/public/rewards" class="btn btn-back">
+                                Back to Rewards
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="cannot-redeem-box">
+                        <div class="error-message">
+                            <h3>⚠️ Not Enough Points</h3>
+                            <p>You need <strong>{{ (reward.points_required - user_points)|number_format }}</strong> more points to redeem this reward.</p>
+                        </div>
+                        
+                        <div class="suggestions">
+                            <h4>How to earn more points:</h4>
+                            <ul>
+                                <li>Make purchases on ShopEasy (10 points per $100 spent)</li>
+                                <li>Complete your profile for bonus points</li>
+                                <li>Participate in special promotions</li>
+                                <li>Check back daily for bonus opportunities</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="action-buttons-large">
+                            <a href="/rewards/affordable" class="btn btn-primary">
+                                View Affordable Rewards
+                            </a>
+                            <a href="/shopeasy-loyalty/public/rewards" class="btn btn-secondary">
+                                Back to All Rewards
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="out-of-stock-box">
+                    <div class="error-message">
+                        <h3>📦 Out of Stock</h3>
+                        <p>This reward is currently unavailable.</p>
+                    </div>
+                    
+                    <div class="suggestions">
+                        <h4>What you can do:</h4>
+                        <ul>
+                            <li>Check back later - stock is updated regularly</li>
+                            <li>Browse other available rewards</li>
+                            <li>Contact support for more information</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="action-buttons-large">
+                        <a href="/rewards" class="btn btn-primary">
+                            Browse Other Rewards
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.reward-detail-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.breadcrumb {
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.breadcrumb a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.alert {
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.reward-detail-card {
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.reward-main-info {
+    display: flex;
+    padding: 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.reward-image-placeholder {
+    width: 120px;
+    height: 120px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 30px;
+}
+
+.image-icon {
+    font-size: 50px;
+}
+
+.reward-info {
+    flex: 1;
+}
+
+.reward-info h1 {
+    margin: 0 0 15px 0;
+    font-size: 2rem;
+}
+
+.points-display-large {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.2);
+    padding: 10px 20px;
+    border-radius: 25px;
+    margin-bottom: 15px;
+}
+
+.points-label {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+.points-value {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.stock-status {
+    margin-top: 10px;
+}
+
+.status {
+    padding: 6px 15px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.status.available {
+    background: rgba(255,255,255,0.2);
+}
+
+.status.unavailable {
+    background: rgba(255,255,255,0.1);
+}
+
+.reward-description-section {
+    padding: 30px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.reward-description-section h2 {
+    margin: 0 0 15px 0;
+    color: #333;
+}
+
+.reward-description-section p {
+    color: #555;
+    line-height: 1.6;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.points-comparison {
+    padding: 30px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.points-comparison h2 {
+    margin: 0 0 20px 0;
+    color: #333;
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.comparison-item {
+    text-align: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.comparison-label {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.comparison-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.comparison-value.required {
+    color: #007bff;
+}
+
+.comparison-value.enough {
+    color: #28a745;
+}
+
+.comparison-value.not-enough {
+    color: #dc3545;
+}
+
+.points-bar {
+    margin-top: 30px;
+}
+
+.bar-background {
+    height: 12px;
+    background: #e9ecef;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #28a745, #20c997);
+    border-radius: 6px;
+    transition: width 1s ease-in-out;
+}
+
+.bar-labels {
+    display: flex;
+    justify-content: space-between;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.redemption-section {
+    padding: 30px;
+}
+
+.can-redeem-box,
+.cannot-redeem-box,
+.out-of-stock-box {
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.can-redeem-box {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+.cannot-redeem-box,
+.out-of-stock-box {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+}
+
+.success-message,
+.error-message {
+    margin-bottom: 25px;
+}
+
+.success-message h3,
+.error-message h3 {
+    margin: 0 0 10px 0;
+    color: #155724;
+}
+
+.error-message h3 {
+    color: #856404;
+}
+
+.success-message p,
+.error-message p {
+    margin: 0;
+    color: #155724;
+    font-size: 1.1rem;
+}
+
+.error-message p {
+    color: #856404;
+}
+
+.redemption-summary {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 25px 0;
+    border: 1px solid #dee2e6;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.summary-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.summary-item.total {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.summary-label {
+    color: #666;
+}
+
+.summary-value {
+    font-weight: bold;
+    color: #333;
+}
+
+.summary-value.deduct {
+    color: #dc3545;
+}
+
+.warning-notice {
+    background: #fff3cd;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 25px 0;
+    border: 1px solid #ffeaa7;
+}
+
+.warning-notice p {
+    margin: 0;
+    color: #856404;
+}
+
+.suggestions {
+    margin: 25px 0;
+}
+
+.suggestions h4 {
+    margin: 0 0 15px 0;
+    color: #856404;
+}
+
+.suggestions ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.suggestions li {
+    margin-bottom: 8px;
+    color: #856404;
+}
+
+.suggestions li:last-child {
+    margin-bottom: 0;
+}
+
+.action-buttons-large {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex: 1;
+}
+
+.btn-redeem-large {
+    background: #28a745;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.btn-redeem-large:hover {
+    background: #1e7e34;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+}
+
+.btn-back,
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-back:hover,
+.btn-secondary:hover {
+    background: #545b62;
+}
+
+.btn-primary {
+    background: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .reward-main-info {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+    
+    .reward-image-placeholder {
+        margin: 0 auto 20px;
+        width: 100px;
+        height: 100px;
+    }
+    
+    .image-icon {
+        font-size: 40px;
+    }
+    
+    .comparison-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .action-buttons-large {
+        flex-direction: column;
+    }
+    
+    .reward-info h1 {
+        font-size: 1.5rem;
+    }
+    
+    .points-display-large {
+        justify-content: center;
+    }
+}
+</style>
+
+<script>
+// Clear error messages after 5 seconds
+setTimeout(function() {
+    var alerts = document.querySelectorAll('.alert');
+    alerts.forEach(function(alert) {
+        alert.style.display = 'none';
+    });
+}, 5000);
+</script>
+{% endblock %}

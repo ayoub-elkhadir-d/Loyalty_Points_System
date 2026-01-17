@@ -1,22 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}ShopEasy{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ShopEasy Loyalty{% endblock %}</title>
+    <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
-
-<nav>
-    {% if session.user_id is defined %}
-        <a href="/logout">Logout</a>
-    {% else %}
-        <a href="/login">Login</a>
-    {% endif %}
-</nav>
-
-<hr>
-
-{% block content %}{% endblock %}
-
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <a href="/dashboard">ShopEasy Loyalty</a>
+            </div>
+            
+            <div class="nav-links">
+                {% if session.user_id %}
+                    <span class="user-info">
+                        <strong>{{ session.user_name }}</strong> 
+                        ({{ session.total_points|default(0)|number_format }} pts)
+                    </span>
+                    <a href="/shopeasy-loyalty/public/dashboard">Dashboard</a>
+                    <a href="/shopeasy-loyalty/public/rewards">Rewards</a>
+                    <a href="/rewards/affordable">Affordable</a>
+                    <a href="/points/history">History</a>
+                    <a href="/shopeasy-loyalty/public/logout" class="logout-btn">Logout</a>
+                {% else %}
+                    <a href="/shopeasy-loyalty/public/login">Login</a>
+                    <a href="/register">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer>
+        <p>&copy; {{ "now"|date("Y") }} ShopEasy Loyalty System - All Rights Reserved</p>
+    </footer>
 </body>
 </html>

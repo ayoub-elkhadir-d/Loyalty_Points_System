@@ -2,56 +2,52 @@
 
 namespace App\Core;
 
-class Router
-{
-    public $routes = [];
+class Router {
+    protected $routes = [];
 
-    public function get(string $path, string $action)
-    {
-        $this->routes['GET'][$path] = $action;
+    public function get($path, $handler) {
+        $this->routes['GET'][$path] = $handler;
     }
 
-    public function post(string $path, string $action)
-    {
-        $this->routes['POST'][$path] = $action;
+    public function post($path, $handler) {
+        $this->routes['POST'][$path] = $handler;
     }
 
-    public function dispatch()
-    {
+    public function dispatch() {
         $method = $_SERVER['REQUEST_METHOD'];
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-        
-        $action = $this->routes[$method][$uri] ?? null;
-        
-        if (!$action) {
-            http_response_code(404);
-            echo "404 - الصفحة غير موجودة<br>";
-            echo "المسار المطلوب: $uri<br>";
-            echo "";
-            return;
+        $basePath = '/shopeasy-loyalty/public';
+        if (strpos($uri, $basePath) === 0) {
+            $uri = substr($uri, strlen($basePath));
         }
+        if (empty($uri)) $uri = '/';
 
-        [$controller, $methodName] = explode('@', $action);
-
-        $controllerClass = "App\\Controllers\\$controller";
-        
+        foreach ($this->routes[$method] as $route => $handler) {
        
-        if (!class_exists($controllerClass)) {
-            http_response_code(500);
-            echo "Controller '$controllerClass' غير موجود";
-            return;
-        }
-        
-        $controller = new $controllerClass();
+            $pattern = preg_replace('/\{[a-zA-Z0-9_]+\}/', '([a-zA-Z0-9_]+)', $route);
+            $pattern = "#^" . $pattern . "$#";
 
-        // تحقق من وجود الدالة
-        if (!method_exists($controller, $methodName)) {
-            http_response_code(500);
-            echo "الدالة '$methodName' غير موجودة في '$controllerClass'";
-            return;
+            if (preg_match($pattern, $uri, $matches)) {
+                array_shift($matches); 
+
+                if (is_callable($handler)) {
+                    return call_user_func_array($handler, $matches);
+                }
+
+                if (is_string($handler)) {
+                    list($controllerName, $methodName) = explode('@', $handler);
+                    $controllerName = "App\\Controllers\\" . $controllerName;
+
+                    if (class_exists($controllerName)) {
+                        $controller = new $controllerName();
+                        return call_user_func_array([$controller, $methodName], $matches);
+                    }
+                }
+            }
         }
 
-        $controller->$methodName();
+        http_response_code(404);
+        echo "404 - Page Not Found at: " . htmlspecialchars($uri);
     }
 }

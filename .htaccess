@@ -1,9 +1,11 @@
 RewriteEngine On
+
+# Ensure we are looking relative to the public folder
 RewriteBase /shopeasy-loyalty/public/
 
-# Redirect all requests to index.php
+# Don't rewrite if the file or directory exists (for CSS/JS)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [QSA,L]
 
-
+# Send everything else to index.php
+RewriteRule ^(.*)$ index.php [L,QSA]

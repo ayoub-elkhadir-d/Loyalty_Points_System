@@ -1,0 +1,244 @@
+{% extends 'layouts/base.twig' %}
+
+{% block title %}Confirm Redemption - ShopEasy Loyalty{% endblock %}
+
+{% block content %}
+<div class="confirmation-container">
+    <div class="back-link">
+        <a href="/rewards/show/{{ reward.id }}">&larr; Back to Reward</a>
+    </div>
+    
+    <div class="confirmation-card">
+        <div class="confirmation-header">
+            <h1>Confirm Redemption</h1>
+            <p>Please review your redemption details</p>
+        </div>
+        
+        <div class="reward-summary">
+            <h2>{{ reward.name }}</h2>
+            <p>{{ reward.description }}</p>
+            
+            <div class="points-info">
+                <div class="info-item">
+                    <span class="label">Points Required:</span>
+                    <span class="value">{{ reward.points_required|number_format }} pts</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Your Points:</span>
+                    <span class="value">{{ user_points|number_format }} pts</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Points After:</span>
+                    <span class="value">{{ balance_after|number_format }} pts</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="warning-box">
+            <h3>⚠️ Important Notice</h3>
+            <ul>
+                <li>This action cannot be undone</li>
+                <li>Points will be deducted immediately</li>
+                <li>Reward will be added to your account</li>
+                <li>Please contact support if you have issues</li>
+            </ul>
+        </div>
+        
+        <div class="confirmation-actions">
+            <form action="/shopeasy-loyalty/public/rewards/redeem/{{ reward.id }}" method="POST">
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="agree" required>
+                        I understand and agree to the terms
+                    </label>
+                </div>
+                
+                <div class="buttons">
+                    <a href="/shopeasy-loyalty/public/rewards/show/{{ reward.id }}" class="btn btn-secondary">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        Confirm Redemption
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.confirmation-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.back-link {
+    margin-bottom: 20px;
+}
+
+.back-link a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.back-link a:hover {
+    text-decoration: underline;
+}
+
+.confirmation-card {
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.confirmation-header {
+    background: #28a745;
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+.confirmation-header h1 {
+    margin: 0 0 10px 0;
+    font-size: 2rem;
+}
+
+.confirmation-header p {
+    margin: 0;
+    opacity: 0.9;
+}
+
+.reward-summary {
+    padding: 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.reward-summary h2 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.reward-summary p {
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.points-info {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #ddd;
+}
+
+.info-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.label {
+    color: #666;
+}
+
+.value {
+    font-weight: bold;
+    color: #333;
+}
+
+.warning-box {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    margin: 0 30px;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.warning-box h3 {
+    margin: 0 0 15px 0;
+    color: #856404;
+}
+
+.warning-box ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.warning-box li {
+    margin-bottom: 8px;
+    color: #856404;
+}
+
+.warning-box li:last-child {
+    margin-bottom: 0;
+}
+
+.confirmation-actions {
+    padding: 30px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.form-group input[type="checkbox"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+}
+
+.buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    font-size: 1rem;
+    transition: background 0.3s;
+    flex: 1;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #545b62;
+}
+
+.btn-success {
+    background: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #1e7e34;
+}
+</style>
+{% endblock %}
