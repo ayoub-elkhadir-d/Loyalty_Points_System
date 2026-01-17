@@ -27,33 +27,6 @@ class User
         }
     }
 
-  
-    public function findById($id)
-    {
-        try {
-            $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = :id");
-            $stmt->execute(['id' => $id]);
-            return $stmt->fetch();
-        } catch (\PDOException $e) {
-            die("err" . $e->getMessage());
-        }
-    }
 
 
-
-    public function verifyPassword($inputPassword, $hashedPassword)
-    {
-        return password_verify($inputPassword, $hashedPassword);
-    }
-
-
-    public function all()
-    {
-        try {
-            $stmt = $this->db->query("SELECT * FROM {$this->table}");
-            return $stmt->fetchAll();
-        } catch (\PDOException $e) {
-            die("" . $e->getMessage());
-        }
-    }
 }

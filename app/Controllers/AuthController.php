@@ -37,7 +37,7 @@ class AuthController extends Controller
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_email'] = $user['email'];
 
-        $this->redirect('/dashboard');
+        $this->redirect('/shopeasy-loyalty/public/dashboard');
     }
 
     public function logout()
