@@ -4,40 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}ShopEasy Loyalty{% endblock %}</title>
-    <link rel="stylesheet" href="/public/css/style.css">
+    
+    {# Using relative paths ensures it works with your Laragon subfolder setup #}
+    <link rel="stylesheet" href="/shopeasy-loyalty/public/css/style.css">
+    
+    {# Extra CSS block in case specific pages need more styles #}
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     <nav>
         <div class="nav-container">
             <div class="logo">
-                <a href="/dashboard">ShopEasy Loyalty</a>
+                <a href="/shopeasy-loyalty/public/dashboard">ShopEasy Loyalty</a>
             </div>
             
             <div class="nav-links">
                 {% if session.user_id %}
-                    <span class="user-info">
-                        <strong>{{ session.user_name }}</strong> 
-                        ({{ session.total_points|default(0)|number_format }} pts)
-                    </span>
+                    <div class="user-status">
+                        <span class="user-info">
+                            <strong>{{ session.user_name }}</strong> 
+                            <span class="points-tag">{{ session.total_points|default(0)|number_format }} pts</span>
+                        </span>
+                    </div>
+                    
                     <a href="/shopeasy-loyalty/public/dashboard">Dashboard</a>
                     <a href="/shopeasy-loyalty/public/rewards">Rewards</a>
-                    <a href="/rewards/affordable">Affordable</a>
-                    <a href="/points/history">History</a>
+                    <a href="/shopeasy-loyalty/public/rewards/affordable">Affordable</a>
+                    <a href="/shopeasy-loyalty/public/points/history">History</a>
                     <a href="/shopeasy-loyalty/public/logout" class="logout-btn">Logout</a>
                 {% else %}
                     <a href="/shopeasy-loyalty/public/login">Login</a>
-                    <a href="/register">Register</a>
+                    <a href="/shopeasy-loyalty/public/register">Register</a>
                 {% endif %}
             </div>
         </div>
     </nav>
+
+    {# Flash Messages Section for Success/Error alerts #}
+    <div class="container">
+        {% if session.success %}
+            <div class="alert alert-success">{{ session.success }}</div>
+        {% endif %}
+        {% if session.error %}
+            <div class="alert alert-error">{{ session.error }}</div>
+        {% endif %}
+    </div>
     
-    <main>
+    <main class="container">
         {% block content %}{% endblock %}
     </main>
     
     <footer>
         <p>&copy; {{ "now"|date("Y") }} ShopEasy Loyalty System - All Rights Reserved</p>
     </footer>
+
+    {% block extra_js %}{% endblock %}
 </body>
 </html>
