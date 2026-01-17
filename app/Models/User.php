@@ -3,21 +3,57 @@
 namespace App\Models;
 
 use App\Core\Database;
-use PDO;
 
 class User
 {
-    public function findByEmail(string $email): ?array
+    private $db;
+    private $table = 'users';
+
+    public function __construct()
     {
-        $pdo = Database::getInstance();
 
-        $stmt = $pdo->prepare(
-            "SELECT * FROM users WHERE email = :email LIMIT 1"
-        );
-        $stmt->execute(['email' => $email]);
+        $this->db = Database::getInstance()->getPDO();
+    }
 
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    public function login($email,$pass)
+    {
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE email = :email and password_hash=:pass");
+            $stmt->execute(['email' => $email,'pass' => $pass]
+            );
+            return $stmt->fetch();
+        } catch (\PDOException $e) {
+            die("err" . $e->getMessage());
+        }
+    }
 
-        return $user ?: null;
+  
+    public function findById($id)
+    {
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = :id");
+            $stmt->execute(['id' => $id]);
+            return $stmt->fetch();
+        } catch (\PDOException $e) {
+            die("err" . $e->getMessage());
+        }
+    }
+
+
+
+    public function verifyPassword($inputPassword, $hashedPassword)
+    {
+        return password_verify($inputPassword, $hashedPassword);
+    }
+
+
+    public function all()
+    {
+        try {
+            $stmt = $this->db->query("SELECT * FROM {$this->table}");
+            return $stmt->fetchAll();
+        } catch (\PDOException $e) {
+            die("" . $e->getMessage());
+        }
     }
 }

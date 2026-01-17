@@ -8,8 +8,9 @@ session_start();
 
 $router = new Router();
 
-$router->get('/login', 'AuthController@loginForm');
-$router->post('/login', 'AuthController@login');
-$router->get('/logout', 'AuthController@logout');
+$router->get('/shopeasy-loyalty/public/login', 'AuthController@loginForm');
+$router->get('/shopeasy-loyalty/public/dashboard', 'DashboardController@loginForm');
+$router->post('/shopeasy-loyalty/public/login', 'AuthController@login');
+$router->get('/shopeasy-loyalty/public/logout', 'AuthController@logout');
 
 $router->dispatch();

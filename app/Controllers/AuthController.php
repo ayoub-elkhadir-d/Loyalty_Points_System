@@ -25,9 +25,9 @@ class AuthController extends Controller
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
 
-        $user = $this->userModel->findByEmail($email);
+        $user = $this->userModel->login($email,$password);
 
-        if (!$user || !password_verify($password, $user['password_hash'])) {
+        if (!$user) {
             $this->render('auth/login.twig', [
                 'error' => 'Email ou mot de passe incorrect'
             ]);
