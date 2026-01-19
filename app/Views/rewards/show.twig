@@ -111,12 +111,19 @@
                         </div>
                         
                         <div class="action-buttons-large">
-                            <a href="/shopeasy-loyalty/public/rewards/redeem/{{ reward.id }}" class="btn btn-redeem-large">
-                                Redeem Now
-                            </a>
+    
+                               <form action="/shopeasy-loyalty/public/rewards/redeem/{{ reward.id }}" method="POST" style="flex: 1;">
+                        
+                                    <button type="submit" class="btn btn-redeem-large" onclick="return confirm('Are you sure you want to redeem this reward?')">
+                                        Redeem Now
+                                    </button>
+                                </form>
+                           
                             <a href="/shopeasy-loyalty/public/rewards" class="btn btn-back">
                                 Back to Rewards
                             </a>
+
+
                         </div>
                     </div>
                 {% else %}

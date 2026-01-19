@@ -67,7 +67,7 @@ nav {
     color: var(--primary);
 }
 
-/* User Info Badge */
+
 .user-info {
     background: var(--light);
     padding: 6px 15px;
@@ -81,7 +81,7 @@ nav {
     color: var(--primary);
 }
 
-/* Logout Button Special Styling */
+
 .logout-btn {
     background-color: #fff1f0;
     color: #f5222d !important;
@@ -91,7 +91,7 @@ nav {
     background-color: #ffccc7 !important;
 }
 
-/* Main Content Area */
+
 main {
     flex: 1;
     max-width: 1200px;
@@ -101,7 +101,7 @@ main {
     box-sizing: border-box;
 }
 
-/* Footer */
+
 footer {
     background: var(--white);
     text-align: center;
