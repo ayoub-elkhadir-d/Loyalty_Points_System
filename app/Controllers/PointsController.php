@@ -23,14 +23,7 @@ class PointsController extends Controller {
     }
     
     
-    public function history() {
-        $userId = $_SESSION['user_id'];
-        // $transactions = $this->pointsModel->getUserTransactions($userId);
-        
-        // $this->render('dashboard/index.twig', [
-        //     'transactionsd' => $transactionsv
-        // ]);
-    }
+
     
     
     public function addFromPurchase() {

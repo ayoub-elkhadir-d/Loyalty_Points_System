@@ -28,6 +28,7 @@ $router->get('/rewards/show/{id}', 'RewardsController@show');
 
 $router->post('/rewards/redeem/{id}', 'RewardsController@redeem');
  $router->get('/products', 'ProductController@getallproducts');
+ $router->post('/products/buy', 'ProductController@buyproduct');
 
 
 $router->get('/', function() {

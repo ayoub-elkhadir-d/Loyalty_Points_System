@@ -29,4 +29,8 @@ class UserModel {
         $stmt = $this->db->prepare("UPDATE users SET total_points = ? WHERE id = ?");
         return $stmt->execute([$points, $userId]);
     }
+    public function getPoints($userId) {
+        $stmt = $this->db->prepare("SELECT total_points FROM  users WHERE id = ?");
+        return $stmt->execute([$userId]);
+    }
 }

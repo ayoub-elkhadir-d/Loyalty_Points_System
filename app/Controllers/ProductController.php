@@ -1,9 +1,13 @@
 <?php 
 namespace App\Controllers;
 use App\Models\productModel;
+use App\Models\UserModel;
 use App\Core\Controller;
+
+//updatePoints
 class ProductController extends Controller{
     private $productM;
+    private $Umodel;
 
 
 function __construct(){
@@ -16,6 +20,12 @@ function __construct(){
         }
          
         $this->productM = new ProductModel();
+        $this->Umodel = new UserModel();
+}
+function buyproduct($count_products){
+
+   //$user_points = 
+
 }
 
 function getallproducts(){
