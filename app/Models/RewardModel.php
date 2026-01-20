@@ -55,7 +55,7 @@ class RewardModel {
     
     public function redeem($rewardId, $userId) {
         
-        $this->db->beginTransaction();
+        
         
         try {
             
@@ -135,7 +135,7 @@ class RewardModel {
             ]);
             
             
-            $this->db->commit();
+           
             
             return [
                 'success' => true,
@@ -147,7 +147,7 @@ class RewardModel {
             
         } catch (\Exception $e) {
             
-            $this->db->rollBack();
+         
             
             return [
                 'success' => false,

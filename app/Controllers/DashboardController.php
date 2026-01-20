@@ -36,7 +36,7 @@ class DashboardController extends Controller {
         }
         
         
-        $recentTransactions = $this->pointsModel->getUserTransactions($userId, 5);
+        $recentTransactions = $this->pointsModel->getUserTransactions($userId);
         
         
         $stats = $this->pointsModel->getUserPointsStats($userId);

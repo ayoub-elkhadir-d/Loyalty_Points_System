@@ -25,11 +25,11 @@ class PointsController extends Controller {
     
     public function history() {
         $userId = $_SESSION['user_id'];
-        $transactions = $this->pointsModel->getUserTransactions($userId);
+        // $transactions = $this->pointsModel->getUserTransactions($userId);
         
-        $this->render('points/history', [
-            'transactions' => $transactions
-        ]);
+        // $this->render('dashboard/index.twig', [
+        //     'transactionsd' => $transactionsv
+        // ]);
     }
     
     
@@ -63,5 +63,6 @@ class PointsController extends Controller {
         }
         
         $this->redirect('/shopeasy-loyalty/public/dashboard');
+        $this ->redirect("/shopeasy-loyality/public/dashboard");
     }
 }

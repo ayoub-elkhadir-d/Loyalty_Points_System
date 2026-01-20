@@ -1,4 +1,8 @@
-<?php 
+<?php
+namespace App\Models;
+
+use App\Core\Database;
+
 class ProductModel{
     private $db;
     private $table = 'Products';
@@ -11,19 +15,27 @@ class ProductModel{
 
 
     function getallProducts(){
-        $sql = "SELECT * FROM $table";
+        $sql = "SELECT * FROM Products";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-    
-    }
-
-    function buyProduct($id){
-
-
-        
-    }
-
-
 
     }
+
+    function getProductbyid($id){
+
+      $sql = "SELECT * from Products where id = ?";
+
+      $stmp = $this->db->prepare($sql);
+
+      $stmp->execute([$id]);
+
+      return $stmp->fetch(\PDO::FETCH_ASSOC);
+
+    }
+
+
+
+    }
+
+    //

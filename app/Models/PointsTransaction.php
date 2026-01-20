@@ -38,18 +38,17 @@ class PointsTransaction
     }
 
    
-    public function getUserTransactions($userId, $limit = 20)
+    public function getUserTransactions($userId)
     {
         try {
             $stmt = $this->db->prepare("
                 SELECT * FROM {$this->table} 
-                WHERE user_id = :user_id 
-                ORDER BY created_at DESC 
-                LIMIT :limit
+                WHERE user_id = :user_id
+                ORDER BY created_at DESC
             ");
             
             $stmt->bindValue(':user_id', $userId, \PDO::PARAM_INT);
-            $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+            
             $stmt->execute();
             
             return $stmt->fetchAll();

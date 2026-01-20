@@ -12,7 +12,7 @@ class RewardsController extends Controller {
     private $pointsModel;
     
     public function __construct() {
-        
+         
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
@@ -27,6 +27,7 @@ class RewardsController extends Controller {
     
     
     public function index() {
+
         $rewards = $this->rewardModel->getAll(true);
         
         $this->render('rewards/catalog', [
@@ -34,19 +35,12 @@ class RewardsController extends Controller {
             'user_points' => $_SESSION['total_points'] ?? 0,
             'filter' => 'all'
         ]);
+
+
     }
     
     
-    public function affordable() {
-        $userPoints = $_SESSION['total_points'] ?? 0;
-        $rewards = $this->rewardModel->getAffordableRewards($userPoints);
-        
-        $this->render('rewards/catalog', [
-            'rewards' => $rewards,
-            'user_points' => $userPoints,
-            'filter' => 'affordable'
-        ]);
-    }
+
     
     
     public function show($id) {
@@ -65,7 +59,7 @@ class RewardsController extends Controller {
     
   public function redeem($id) {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->redirect('/rewards/show/' . $id);
+            $this->redirect('/shopeasy-loyalty/public/rewards/show/' . $id);
         }
         
         $userId = $_SESSION['user_id'];
