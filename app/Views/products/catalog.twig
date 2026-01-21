@@ -105,7 +105,7 @@
         
    
         {% if product.stock_quantity > 0 %}
-            <form action="/shopeasy-loyalty/public/cart/add" method="POST">
+            <form action="/shopeasy-loyalty/public/products/card-add-item" method="POST">
                 <input type="hidden" name="product_id" value="{{ product.product_id }}">
                 <button type="submit" class="buy-btn">Add to Cart</button>
             </form>

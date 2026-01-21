@@ -22,19 +22,15 @@ function __construct(){
         $this->productM = new ProductModel();
         $this->Umodel = new UserModel();
 }
-function buyproduct($count_products){
 
-   //$user_points = 
 
-}
-
-function getallproducts(){
- $products = $this->productM->getallProducts();
+// function getallproducts(){
+//  $products = $this->productM->getallProducts($_SESSION['user_id']);
  
-         $this->render('/products/catalog', [
-           'products' => $products
-        ]);
-   }
+//          $this->render('/products/cart.html', [
+//            'cart_items' => $products
+//         ]);
+//    }
 
 
 

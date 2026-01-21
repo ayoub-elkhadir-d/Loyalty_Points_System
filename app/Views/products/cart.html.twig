@@ -1,11 +1,11 @@
-{% extends 'base.html.twig' %}
+{# {% extends 'base.html.twig' %} #}
 
 {% block title %}ShopEasy - Panier{% endblock %}
 
 {% block content %}
     <h1>Votre Panier</h1>
 
-    {% if cart_items is empty %}
+    {% if card_products is empty %}
         <div class="empty-cart">
             <p class="empty-cart-icon">Panier vide</p>
             <p>Votre panier est vide</p>
@@ -13,6 +13,7 @@
         </div>
     {% else %}
         <div class="cart-content">
+
             <table class="cart-table">
                 <thead>
                     <tr>
@@ -24,21 +25,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in cart_items %}
+                    {% for item in card_products %}
                         <tr>
                             <td class="product-name">{{ item.name }}</td>
+
                             <td>{{ item.price|number_format(2, '.', ' ') }} $</td>
                             <td>
-                                <form action="/shop/update-cart" method="POST" class="update-qty-form">
-                                    <input type="hidden" name="product_id" value="{{ item.id }}">
-                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="0" max="99" class="qty-input">
+                                <form action="/shopeasy-loyalty/public/products/update-cart" method="POST" class="update-qty-form">
+                                    <input type="hidden" name="product_id" value="{{ item.product_id }}">
+                                    <input type="number" name="quantity" value="{{ item.quntity }}" min="0" max="99" class="qty-input">
                                     <button type="submit" class="btn btn-small">Mettre à jour</button>
                                 </form>
                             </td>
-                            <td class="subtotal">{{ (item.price * item.quantity)|number_format(2, '.', ' ') }} $</td>
+                            <td class="subtotal">{{ (item.price * item.quntity)|number_format(2, '.', ' ') }} $</td>
                             <td>
-                                <form action="/shop/remove-from-cart" method="POST" class="remove-form">
-                                    <input type="hidden" name="product_id" value="{{ item.id }}">
+                                <form action="/shopeasy-loyalty/public/products/delete-from-cart" method="POST" class="remove-form">
+                                    <input type="hidden" name="product_id" value="{{ item.product_id }}">
                                     <button type="submit" class="btn btn-danger btn-small">Supprimer</button>
                                 </form>
                             </td>

@@ -22,10 +22,18 @@ class CardModel {
         $stmt = $this->db->prepare("DELETE FROM Card where userid = ? and product_id =?");
         $stmt->execute([$userId, $productid]);
     }
-       public function getproductsfromCard() {
-        $stmt = $this->db->prepare("SELECT p.* FROM card e INNER JOIN users u ON e.userid = u.id INNER JOIN products p ON e.product_id = p.product_id where u.id =1;");
-        $stmt->execute();
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
+       public function getproductsfromCard($user_id) {
+        $stmt = $this->db->prepare("SELECT p.* ,e.quntity as quntity FROM card e INNER JOIN users u ON e.userid = u.id INNER JOIN products p ON e.product_id = p.product_id where u.id =?;");
+        $stmt->execute([$user_id]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+     function updateCard($userid,$productId,$newQuentity){
+        $stmt = $this->db->prepare("UPDATE Card set quntity = ? where userid = ? and product_id =?");
+        $stmt->execute([$newQuentity, $userid,$productId]);
+
+     }
+     
 }
+// $obj = new CardModel();
+//  print_r($obj->getproductsfromCard(1));
