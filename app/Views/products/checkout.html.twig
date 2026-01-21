@@ -16,7 +16,7 @@
             <h2>Informations de paiement</h2>
             <p class="form-note">Simulation de paiement (données non enregistrées)</p>
             
-            <form action="/shop/process-checkout" method="POST" class="checkout-form">
+            <form action="/shopeasy-loyalty/public/products/process-checkout" method="POST" class="checkout-form">
                 <div class="form-group">
                     <label for="card_name">Nom sur la carte</label>
                     <input type="text" id="card_name" name="card_name" placeholder="Jean Dupont" required>
@@ -67,8 +67,8 @@
             </div>
 
             <div class="current-balance">
-                <p>Votre solde actuel: <strong>{{ total_points }} points</strong></p>
-                <p>Après cet achat: <strong>{{ total_points + points }} points</strong></p>
+                <p>Votre solde actuel: <strong>{{ old_points }} points</strong></p>
+                <p>Après cet achat: <strong>{{ new_points}} points</strong></p>
             </div>
 
             <a href="/shop/cart" class="btn btn-secondary btn-full">Modifier le panier</a>
