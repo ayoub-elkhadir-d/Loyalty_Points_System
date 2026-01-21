@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{# {% extends 'base.html.twig' %} #}
 
 {% block title %}ShopEasy - Paiement{% endblock %}
 
@@ -39,14 +39,13 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-large btn-full">
-                    Payer {{ cart_total|number_format(2, '.', ' ') }} $
+                    Payer {{ total|number_format(2, '.', ' ') }} $
                 </button>
             </form>
         </div>
 
         <div class="order-summary">
             <h2>Récapitulatif</h2>
-            
             <div class="summary-items">
                 {% for item in cart_items %}
                     <div class="summary-item">
@@ -59,17 +58,17 @@
             <div class="summary-totals">
                 <div class="summary-row total-row">
                     <span>Total:</span>
-                    <span class="total-amount">{{ cart_total|number_format(2, '.', ' ') }} $</span>
+                    <span class="total-amount">{{ total|number_format(2, '.', ' ') }} $</span>
                 </div>
                 <div class="summary-row points-row highlight">
-                    <span>Points à gagner:</span>
-                    <span class="points-earned">{{ loyalty_points }} points</span>
+                    <span>Points à gagner: </span>
+                    <span class="points-earned">{{ points }} points</span>
                 </div>
             </div>
 
             <div class="current-balance">
-                <p>Votre solde actuel: <strong>{{ user.loyalty_points }} points</strong></p>
-                <p>Après cet achat: <strong>{{ user.loyalty_points + loyalty_points }} points</strong></p>
+                <p>Votre solde actuel: <strong>{{ total_points }} points</strong></p>
+                <p>Après cet achat: <strong>{{ total_points + points }} points</strong></p>
             </div>
 
             <a href="/shop/cart" class="btn btn-secondary btn-full">Modifier le panier</a>

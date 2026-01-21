@@ -34,6 +34,8 @@ $router->post('/rewards/redeem/{id}', 'RewardsController@redeem');
  $router->post('/products/update-cart', 'CardController@updateCard');
  $router->post('/products/delete-from-cart', 'CardController@deleteitem');
  $router->post('/products/card-add-item', 'CardController@additem');
+ $router->post('/products/checkout', 'CardController@checkout');
+ $router->post('/products/process-checkout', 'CardController@processcheckout');
 
 
 $router->get('/', function() {

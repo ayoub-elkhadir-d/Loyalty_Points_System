@@ -8,6 +8,7 @@ use App\Core\Controller;
 class CardController extends Controller
 {
     private $CardM;
+    
     function __construct()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -50,5 +51,16 @@ class CardController extends Controller
         $this->CardM->addCard($_SESSION["user_id"], $_POST["product_id"]);
         $this->redirect("/shopeasy-loyalty/public/products/card");
     
+    }
+    function checkout(){
+      $this->render("/products/checkout.html", [
+            "total" => $_POST["total"],
+            "points" => $_POST["points"],
+            'total_points' => $_SESSION['total_points'],
+           
+        ]);
+    }
+    function processcheckout(){
+       
     }
 }

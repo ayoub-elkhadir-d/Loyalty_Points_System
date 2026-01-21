@@ -61,8 +61,16 @@
                 <p class="points-info">10 points par tranche de 100$ dépensés</p>
                 
                 <div class="cart-actions">
-                    <a href="/shop" class="btn btn-secondary">Continuer mes achats</a>
-                    <a href="/shop/checkout" class="btn btn-primary btn-large">Passer la commande</a>
+
+                <form action="/shopeasy-loyalty/public/products/checkout" method="POST" class="update-qty-form">
+                
+                  <input type="hidden" name="total" value=" {{ card_products[0].grand_total }} ">
+                  <input type="hidden" name="points" value=" {{card_products[0].grand_total / 10}} ">
+
+                    <a href="/shopeasy-loyalty/public/products" class="btn btn-secondary">Continuer mes achats</a>
+                    <button type="submit" class="btn btn-danger btn-small">Passer la commande</button>
+                </form>
+
                 </div>
             </div>
         </div>
