@@ -22,7 +22,11 @@ class CardModel {
         $stmt->execute([$userId, $productid]);
     }
        public function getproductsfromCard($user_id) {
-        $stmt = $this->db->prepare("SELECT p.* ,e.quntity as quntity FROM card e INNER JOIN users u ON e.userid = u.id INNER JOIN products p ON e.product_id = p.product_id where u.id =?;");
+        $stmt = $this->db->prepare("SELECT p.*, e.quntity, (e.quntity * p.price) AS item_total,  SUM(e.quntity * p.price) OVER() AS grand_total
+                                    FROM card e
+                                    INNER JOIN users u ON e.userid = u.id
+                                    INNER JOIN products p ON e.product_id = p.product_id
+                                    WHERE u.id = ?;");
         $stmt->execute([$user_id]);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
@@ -31,6 +35,9 @@ class CardModel {
         $stmt = $this->db->prepare("UPDATE Card set quntity = ? where userid = ? and product_id =?");
         $stmt->execute([$newQuentity, $userid,$productId]);
 
+     }
+     function getTotal(){
+        
      }
      
 }

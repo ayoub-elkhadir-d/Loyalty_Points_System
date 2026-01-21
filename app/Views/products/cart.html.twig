@@ -1,4 +1,4 @@
-{# {% extends 'base.html.twig' %} #}
+{% extends 'layouts/base.twig' %}
 
 {% block title %}ShopEasy - Panier{% endblock %}
 
@@ -28,7 +28,7 @@
                     {% for item in card_products %}
                         <tr>
                             <td class="product-name">{{ item.name }}</td>
-
+                              
                             <td>{{ item.price|number_format(2, '.', ' ') }} $</td>
                             <td>
                                 <form action="/shopeasy-loyalty/public/products/update-cart" method="POST" class="update-qty-form">
@@ -37,7 +37,7 @@
                                     <button type="submit" class="btn btn-small">Mettre à jour</button>
                                 </form>
                             </td>
-                            <td class="subtotal">{{ (item.price * item.quntity)|number_format(2, '.', ' ') }} $</td>
+                            <td class="subtotal">{{ item.item_total|number_format(2, '.', ' ') }} $</td>
                             <td>
                                 <form action="/shopeasy-loyalty/public/products/delete-from-cart" method="POST" class="remove-form">
                                     <input type="hidden" name="product_id" value="{{ item.product_id }}">
@@ -52,11 +52,11 @@
             <div class="cart-summary">
                 <div class="summary-row">
                     <span>Total du panier:</span>
-                    <span class="total-amount">{{ cart_total|number_format(2, '.', ' ') }} $</span>
+                    <span class="total-amount">{{card_products[0].grand_total|number_format(2, '.', ' ') }} $</span>
                 </div>
                 <div class="summary-row points-row">
                     <span>Points à gagner:</span>
-                    <span class="points-earned">{{ loyalty_points }} points</span>
+                    <span class="points-earned">{{card_products[0].grand_total / 10  }} points</span>
                 </div>
                 <p class="points-info">10 points par tranche de 100$ dépensés</p>
                 
