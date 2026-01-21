@@ -29,11 +29,11 @@ $router->get('/rewards/show/{id}', 'RewardsController@show');
 $router->post('/rewards/redeem/{id}', 'RewardsController@redeem');
  $router->get('/products', 'ProductController@getallproducts');
 
- 
+
  $router->get('/products/card', 'CardController@getcardproducts');
  $router->post('/products/update-cart', 'CardController@updateCard');
  $router->post('/products/delete-from-cart', 'CardController@deleteitem');
- $router->post('/products/card-add-item', 'CardController@deleteitem');
+ $router->post('/products/card-add-item', 'CardController@additem');
 
 
 $router->get('/', function() {

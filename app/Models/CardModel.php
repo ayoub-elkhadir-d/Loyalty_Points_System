@@ -14,9 +14,8 @@ class CardModel {
     
 
        public function addCard($userId, $productid) {
-        $stmt = $this->db->prepare("INSERT INTO Card(userid,product_id)
-          VALUES (?,?);");
-         $stmt->execute([$userId, $productid]);
+        $stmt = $this->db->prepare("INSERT INTO Card(userid,product_id,quntity) VALUES (?,?,?);");
+         $stmt->execute([$userId, $productid,1]);
     }
        public function RemoveCard($userId, $productid) {
         $stmt = $this->db->prepare("DELETE FROM Card where userid = ? and product_id =?");

@@ -24,13 +24,13 @@ function __construct(){
 }
 
 
-// function getallproducts(){
-//  $products = $this->productM->getallProducts($_SESSION['user_id']);
+function getallproducts(){
+ $products = $this->productM->getallProducts();
  
-//          $this->render('/products/cart.html', [
-//            'cart_items' => $products
-//         ]);
-//    }
+         $this->render('/products/catalog', [
+           'products' => $products
+        ]);
+   }
 
 
 

@@ -36,8 +36,7 @@ $this->CardM->RemoveCard($_SESSION['user_id'],$_POST['product_id']);
 $this->redirect('/shopeasy-loyalty/public/products/card');
 }
 function additem(){
-
-$this->CardM->addCard($_SESSION['user_id'],$_POST['product_id'],1);
+$this->CardM->addCard($_SESSION['user_id'],$_POST['product_id']);
 $this->redirect('/shopeasy-loyalty/public/products/card');
 }
 
