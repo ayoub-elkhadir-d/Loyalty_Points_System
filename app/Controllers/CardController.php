@@ -59,7 +59,7 @@ class CardController extends Controller
 
     function checkout(){
    $_SESSION['points'] = $_POST["points"];
-   
+
       $this->render("/products/checkout.html", [
             "total" => $_POST["total"],
             "points" => $_POST["points"],
@@ -67,11 +67,11 @@ class CardController extends Controller
             'new_points' => $_SESSION['total_points'] + $_SESSION['points']
            
         ]);
-        // $_SESSION['username'] = "JohnDoe"
+      
     }
     function processcheckout(){
-     $_SESSION['total_points'] = $_SESSION['total_points'] + $_SESSION['points'];
-
+         $_SESSION['total_points'] = $_SESSION['total_points'] + $_SESSION['points'];
+          
         $this->UserM->updatePoints($_SESSION["user_id"],$_SESSION['total_points']); 
         
 
