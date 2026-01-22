@@ -4,11 +4,12 @@ use App\Models\productModel;
 use App\Models\UserModel;
 use App\Models\CardModel;
 use App\Core\Controller;
-
+use App\Models\PointsModel;
 class CardController extends Controller
 {
     private $CardM;
     private $UserM;
+   
 
     function __construct()
     {
@@ -21,6 +22,7 @@ class CardController extends Controller
         }
         $this->CardM = new CardModel();
         $this->UserM = new UserModel();
+     
     }
     function getcardproducts()
     {
@@ -54,19 +56,25 @@ class CardController extends Controller
         $this->redirect("/shopeasy-loyalty/public/products/card");
     
     }
+
     function checkout(){
-        $_SESSION['total_points'] = $_SESSION['total_points']+$_POST["points"];
+   $_SESSION['points'] = $_POST["points"];
+   
       $this->render("/products/checkout.html", [
             "total" => $_POST["total"],
             "points" => $_POST["points"],
-            'old_points' => $_SESSION['total_points']-$_POST["points"],
-            'new_points' => $_SESSION['total_points']  ,
+            'old_points' => $_SESSION['total_points'],
+            'new_points' => $_SESSION['total_points'] + $_SESSION['points']
            
         ]);
         // $_SESSION['username'] = "JohnDoe"
     }
     function processcheckout(){
+     $_SESSION['total_points'] = $_SESSION['total_points'] + $_SESSION['points'];
+
         $this->UserM->updatePoints($_SESSION["user_id"],$_SESSION['total_points']); 
-          $this->redirect('/shopeasy-loyalty/public/dashboard');
+        
+
+         $this->redirect('/shopeasy-loyalty/public/dashboard');
     }
 }
